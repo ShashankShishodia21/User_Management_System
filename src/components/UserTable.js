@@ -71,13 +71,13 @@ const UserTable = () => {
       setUsers(users.map(user => (user.id === updatedUser.id ? updatedUser : user)));
       setFilteredUsers(filteredUsers.map(user => (user.id === updatedUser.id ? updatedUser : user)));
     } else { // Creating a new user
-      const newUser = { ...updatedUser, id: users.length + 1 }; 
+      const newUser = { ...updatedUser, id: users.length + 1, local: true }; // Add 'local' flag for new user
       setUsers([...users, newUser]);
-      setFilteredUsers([...filteredUsers, newUser]); 
+      setFilteredUsers([...filteredUsers, newUser]); // Update filtered users as well
     }
-    handleCloseModal();  
+    handleCloseModal();  // Close the modal after submission
   };
-
+  
   return (
     <div className='Main-screen'>
       <h1>USER MANAGEMENT SYSTEM</h1>
@@ -109,7 +109,11 @@ const UserTable = () => {
                 <td>{user.email}</td>
                 <td>{user.phone}</td>
                 <td className='special-td'>
-                  <Link to={`/user/${user.id}`}>View Details</Link>
+                  {user.local ? (
+                    <Link to="#" onClick={() => alert("Local User: " + JSON.stringify(user))}>View Details</Link>
+                  ) : (
+                    <Link to={`/user/${user.id}`}>View Details</Link>
+                  )}
                   <button className='edit-btn' onClick={() => handleEdit(user)}>Edit</button>
                   <button className='delete-btn' onClick={() => handleDelete(user.id)}>Delete</button>
                 </td>
